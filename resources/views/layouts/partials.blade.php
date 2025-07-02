@@ -143,23 +143,7 @@
             </li>
         </ul>
 
-        <ul class="navbar-nav ml-auto">
-            {{-- Notifications --}}
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">3</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-header">3 Notifications</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">New task assigned</a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All</a>
-                </div>
-            </li>
-
-            {{-- User Dropdown --}}
+        {{-- User Dropdown --}}
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'User') }}"
@@ -230,110 +214,122 @@
                         @if(Auth::user() && Auth::user()->is_admin)
                         <li class="nav-header text-uppercase text-muted mt-2"><small>Administration</small></li>
                         
-                        {{-- Admin Dashboard --}}
-                        <li class="nav-item">
-                            <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-tachometer-alt text-primary"></i>
-                                <p>Admin Dashboard</p>
-                            </a>
-                        </li>
-
-                        {{-- User Management with dropdown --}}
-                        <li class="nav-item has-treeview {{ request()->is('admin/users*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ request()->is('admin/users*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-users text-info"></i>
+                        {{-- Settings Dropdown --}}
+                        <li class="nav-item has-treeview {{ request()->is('admin/dashboard*') || request()->is('admin/users*') || request()->is('admin/statuses*') || request()->is('admin/complexities*') || request()->is('admin/groups*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ request()->is('admin/dashboard*') || request()->is('admin/users*') || request()->is('admin/statuses*') || request()->is('admin/complexities*') || request()->is('admin/groups*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-cog text-primary"></i>
                                 <p>
-                                    User Management
+                                    Admin Settings
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                                {{-- Admin Dashboard --}}
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->is('admin/users') ? 'active' : '' }}">
-                                        <i class="fas fa-list nav-icon"></i>
-                                        <p>User Listing</p>
+                                    <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
+                                        <i class="fas fa-tachometer-alt nav-icon"></i>
+                                        <p>Admin Dashboard</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.users.create') }}" class="nav-link {{ request()->is('admin/users/create') ? 'active' : '' }}">
-                                        <i class="fas fa-plus-circle nav-icon"></i>
-                                        <p>Add User</p>
+                                
+                                {{-- User Management --}}
+                                <li class="nav-item has-treeview {{ request()->is('admin/users*') ? 'menu-open' : '' }}">
+                                    <a href="#" class="nav-link {{ request()->is('admin/users*') ? 'active' : '' }}">
+                                        <i class="fas fa-users nav-icon"></i>
+                                        <p>
+                                            User Management
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
                                     </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->is('admin/users') ? 'active' : '' }}">
+                                                <i class="fas fa-list nav-icon"></i>
+                                                <p>User Listing</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.users.create') }}" class="nav-link {{ request()->is('admin/users/create') ? 'active' : '' }}">
+                                                <i class="fas fa-plus-circle nav-icon"></i>
+                                                <p>Add User</p>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
-                            </ul>
-                        </li>
-                        
-                        {{-- Status Management with dropdown --}}
-                        <li class="nav-item has-treeview {{ request()->is('admin/statuses*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ request()->is('admin/statuses*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-flag text-warning"></i>
-                                <p>
-                                    Status Management
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.statuses.index') }}" class="nav-link {{ request()->is('admin/statuses') ? 'active' : '' }}">
-                                        <i class="fas fa-list nav-icon"></i>
-                                        <p>Status Listing</p>
+                                
+                                {{-- Status Management --}}
+                                <li class="nav-item has-treeview {{ request()->is('admin/statuses*') ? 'menu-open' : '' }}">
+                                    <a href="#" class="nav-link {{ request()->is('admin/statuses*') ? 'active' : '' }}">
+                                        <i class="fas fa-flag nav-icon"></i>
+                                        <p>
+                                            Status Management
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
                                     </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.statuses.index') }}" class="nav-link {{ request()->is('admin/statuses') ? 'active' : '' }}">
+                                                <i class="fas fa-list nav-icon"></i>
+                                                <p>Status Listing</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.statuses.create') }}" class="nav-link {{ request()->is('admin/statuses/create') ? 'active' : '' }}">
+                                                <i class="fas fa-plus-circle nav-icon"></i>
+                                                <p>Add Status</p>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.statuses.create') }}" class="nav-link {{ request()->is('admin/statuses/create') ? 'active' : '' }}">
-                                        <i class="fas fa-plus-circle nav-icon"></i>
-                                        <p>Add Status</p>
+                                
+                                {{-- Task Classification --}}
+                                <li class="nav-item has-treeview {{ request()->is('admin/complexities*') ? 'menu-open' : '' }}">
+                                    <a href="#" class="nav-link {{ request()->is('admin/complexities*') ? 'active' : '' }}">
+                                        <i class="fas fa-layer-group nav-icon"></i>
+                                        <p>
+                                            Task Classification
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
                                     </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.complexities.index') }}" class="nav-link {{ request()->is('admin/complexities') ? 'active' : '' }}">
+                                                <i class="fas fa-list nav-icon"></i>
+                                                <p>Complexity Levels</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.complexities.create') }}" class="nav-link {{ request()->is('admin/complexities/create') ? 'active' : '' }}">
+                                                <i class="fas fa-plus-circle nav-icon"></i>
+                                                <p>Add Complexity</p>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
-                            </ul>
-                        </li>
-                        
-                        {{-- Task Classification with dropdown --}}
-                        <li class="nav-item has-treeview {{ request()->is('admin/complexities*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ request()->is('admin/complexities*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-layer-group text-danger"></i>
-                                <p>
-                                    Task Classification
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.complexities.index') }}" class="nav-link {{ request()->is('admin/complexities') ? 'active' : '' }}">
-                                        <i class="fas fa-list nav-icon"></i>
-                                        <p>Complexity Levels</p>
+                                
+                                {{-- Group Management --}}
+                                <li class="nav-item has-treeview {{ request()->is('admin/groups*') ? 'menu-open' : '' }}">
+                                    <a href="#" class="nav-link {{ request()->is('admin/groups*') ? 'active' : '' }}">
+                                        <i class="fas fa-users-cog nav-icon"></i>
+                                        <p>
+                                            Group Management
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
                                     </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.complexities.create') }}" class="nav-link {{ request()->is('admin/complexities/create') ? 'active' : '' }}">
-                                        <i class="fas fa-plus-circle nav-icon"></i>
-                                        <p>Add Complexity</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        
-                        {{-- Group Management with dropdown --}}
-                        <li class="nav-item has-treeview {{ request()->is('admin/groups*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ request()->is('admin/groups*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-users-cog text-success"></i>
-                                <p>
-                                    Group Management
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.groups.index') }}" class="nav-link {{ request()->is('admin/groups') ? 'active' : '' }}">
-                                        <i class="fas fa-list nav-icon"></i>
-                                        <p>Group Listing</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.groups.create') }}" class="nav-link {{ request()->is('admin/groups/create') ? 'active' : '' }}">
-                                        <i class="fas fa-plus-circle nav-icon"></i>
-                                        <p>Add Group</p>
-                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.groups.index') }}" class="nav-link {{ request()->is('admin/groups') ? 'active' : '' }}">
+                                                <i class="fas fa-list nav-icon"></i>
+                                                <p>Group Listing</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.groups.create') }}" class="nav-link {{ request()->is('admin/groups/create') ? 'active' : '' }}">
+                                                <i class="fas fa-plus-circle nav-icon"></i>
+                                                <p>Add Group</p>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </li>
